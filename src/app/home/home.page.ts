@@ -15,9 +15,9 @@ const { Camera, LocalNotifications, Geolocation, Toast } = Plugins;
 export class HomePage implements OnInit {
   taskList: Array<any> = [];
   taskName: string = "";
-  photo : any = "";
+  photo: any = "";
 
-  location : any ;
+  location: any;
 
   constructor(
     public firestore: AngularFirestore,
@@ -27,15 +27,15 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     // this.takePicture();
-    // this.getTask();
+    this.getTask();
     // this.getTask2();
     // this.getNotification();
     // this.show();
   }
 
-  async ionicToast(){
+  async ionicToast(location: any) {
     const toast = await this.toastController.create({
-      message: "Ionic Toast",
+      message: `Latitude = ${location.latitude} , Longitude = ${location.longitude}`,
       duration: 5000,
       color: 'warning'
     });
@@ -43,32 +43,34 @@ export class HomePage implements OnInit {
     await toast.present();
   }
 
-  async show() {
-    await Toast.show({
-      text: 'Hello Toast plugin!'
+  async show(data: any, text: string) {
+    // await Toast.show({
+    //   text: `${name} ${text}`
+    // });
+    const toast = await this.toastController.create({
+      message: `${data.name} with the id of ${data.id} ${text}`,
+      duration: 5000,
+      color: 'warning'
     });
+
+    await toast.present();
   }
 
   async getCurrentPosition() {
-    await Toast.show({
-      text: 'before'
-    });
-    const coordinates = await Geolocation.getCurrentPosition();
 
-    this.location = coordinates.coords.latitude;
-    await Toast.show({
-      text: this.location
+    const coordinates = await Geolocation.getCurrentPosition({
+      enableHighAccuracy: true
     });
-    console.log('Current');
-    console.log('Current', coordinates.coords);
+
+    this.ionicToast(coordinates.coords);
   }
 
-  async getNotification(){
+  async getNotification(msg: any) {
     const notifs = await LocalNotifications.schedule({
       notifications: [
         {
-          title: "Title",
-          body: "Body",
+          title: "Added to Firestore",
+          body: `New Task: ${msg}`,
           id: 1,
           schedule: { at: new Date(Date.now() + 1000 * 5) },
           sound: null,
@@ -88,13 +90,6 @@ export class HomePage implements OnInit {
       resultType: CameraResultType.Uri,
       saveToGallery: true
     });
-    // image.webPath will contain a path that can be set as an image src.
-    // You can access the original file using image.path, which can be
-    // passed to the Filesystem API to read the raw data of the image,
-    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-    // var imageUrl = image.webPath;
-    // Can be set to the src of an image now
-    // imageElement.src = imageUrl;
 
     this.photo = image.webPath;
   }
@@ -121,10 +116,10 @@ export class HomePage implements OnInit {
       this.firestore.collection("task").add({
         name: this.taskName
       });
+      this.getNotification(this.taskName);
       this.taskName = "";
     }
 
-    // console.log("You have clicked this button!");
   }
 
   async updateTask(id: any) {
