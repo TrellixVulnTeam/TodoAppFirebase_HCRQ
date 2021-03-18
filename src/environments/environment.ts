@@ -6,13 +6,13 @@ export const environment = {
   production: false,
 
   firebaseConfig : {
-    apiKey: "AIzaSyCIcMtrsoYyFoJ0Poo9q1EfLwepvcdDRLo",
-    authDomain: "teaching-3da2a.firebaseapp.com",
-    projectId: "teaching-3da2a",
-    storageBucket: "teaching-3da2a.appspot.com",
-    messagingSenderId: "135716938203",
-    appId: "1:135716938203:web:d36dea2c5b7a5d9f24c7fe",
-    measurementId: "G-DX42PZ7FRY"
+    apiKey: "AIzaSyBbovN30WjfGO8OOaSL47fnX7c4uGBpZuw",
+    authDomain: "todoappfirebase-789da.firebaseapp.com",
+    projectId: "todoappfirebase-789da",
+    storageBucket: "todoappfirebase-789da.appspot.com",
+    messagingSenderId: "302555230885",
+    appId: "1:302555230885:web:84f66a210b9647680b134c",
+    measurementId: "G-58MBW9BJD6"
   }
 };
 
